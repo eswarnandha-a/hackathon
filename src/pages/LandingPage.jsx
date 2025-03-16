@@ -1,4 +1,9 @@
-import { Link } from 'react-router-dom'; // Import Link
+import { useState, useEffect } from 'react'
+import Lottie from 'lottie-react'
+import animationData from './animate.json'
+import logo from './logo.png'
+import './launchCSS.css'
+import { motion } from 'framer-motion'
 
 function LandingPage() {
   const [text, setText] = useState("");
@@ -52,15 +57,15 @@ function LandingPage() {
               <span>Money will save you</span>
             </motion.div>
           </motion.div>
-          <motion.div
+          <motion.a
+            href="/authentication"
+            className="get-started-btn"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 3 }}
           >
-            <Link to="/auth" className="get-started-btn"> {/* Replace <a> with <Link> */}
-              Get Started
-            </Link>
-          </motion.div>
+            Get Started
+          </motion.a>
         </div>
         <motion.div 
           className="animation-section"
@@ -72,7 +77,7 @@ function LandingPage() {
         </motion.div>
       </div>
     </div>
-  );
+  )
 }
 
-export default LandingPage;
+export default LandingPage

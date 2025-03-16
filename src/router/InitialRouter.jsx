@@ -28,7 +28,7 @@ const InitialRouter = ({ token, user, handleLogin, handleLogout, handleQuestionn
       {/* Public routes */}
       <Route path="/" element={<LandingPage />} />
       <Route
-        path="/auth"
+        path="/authentication"
         element={<AuthPage onLogin={handleLogin} />}
       />
 
