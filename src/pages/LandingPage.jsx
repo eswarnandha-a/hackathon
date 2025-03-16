@@ -4,7 +4,7 @@ import animationData from './animate.json'
 import logo from './logo.png'
 import './launchCSS.css'
 import { motion } from 'framer-motion'
-
+import { Link } from 'react-router-dom'
 function LandingPage() {
   const [text, setText] = useState("");
   const quote = "Save money and money will save you";
@@ -57,15 +57,13 @@ function LandingPage() {
               <span>Money will save you</span>
             </motion.div>
           </motion.div>
-          <motion.a
-            href="/authentication"
+          <motion
             className="get-started-btn"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 3 }}
           >
-            Get Started
-          </motion.a>
+ <Link to="/authentication">Go to Authentication</Link>           </motion>
         </div>
         <motion.div 
           className="animation-section"
