@@ -14,6 +14,7 @@ import Layout from '../components/Layout';
 const InitialRouter = ({ token, user, handleLogin, handleLogout, handleQuestionnaireComplete }) => {
   const PrivateRoute = ({ children }) => {
     if (!token) {
+      console.log("")
       return <Navigate to="/" />;
     }
     if (!user.isQuestionnaireDone && window.location.pathname !== '/questionnaire') {
