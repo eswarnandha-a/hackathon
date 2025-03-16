@@ -1,17 +1,16 @@
-import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import './App.css'
-import ChatPage from './pages/ChatPage'
-import QuestionnaireForm from './components/QuestionnaireForm'
-import HomePage from './components/HomePage'
-import InsightsPage from './pages/InsightsPage'
-import MotivatePage from './pages/MotivatePage'
-import ProfilePage from './pages/ProfilePage'
-import AuthPage from './pages/AuthPage'
-import LandingPage from './pages/LandingPage'
-import InvestmentPage from './pages/InvestmentPage'
-import styled from 'styled-components'
-import Layout from './components/Layout'
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import ChatPage from './pages/ChatPage';
+import QuestionnaireForm from './components/QuestionnaireForm';
+import HomePage from './components/HomePage';
+import InsightsPage from './pages/InsightsPage';
+import MotivatePage from './pages/MotivatePage';
+import ProfilePage from './pages/ProfilePage';
+import AuthPage from './pages/AuthPage';
+import LandingPage from './pages/LandingPage';
+import InvestmentPage from './pages/InvestmentPage';
+import Layout from './components/Layout';
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -33,19 +32,6 @@ const AppContainer = styled.div`
   overflow: hidden;
 `;
 
-const PageTransition = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: ${props => props.show ? 1 : 0};
-  transition: opacity 0.5s ease;
-  position: absolute;
-  pointer-events: ${props => props.show ? 'auto' : 'none'};
-`;
-
-// AppContent component to use hooks inside Router
 function AppContent() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
@@ -68,13 +54,13 @@ function AppContent() {
 
   const handleQuestionnaireComplete = async (questionnaireData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/questionnaire', {
+      const response = await fetch('https://hack-backend-rzgv.onrender.com/api/questionnaire', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(questionnaireData)
+        body: JSON.stringify(questionnaireData),
       });
 
       if (!response.ok) {
@@ -89,7 +75,6 @@ function AppContent() {
     }
   };
 
-  // Protected route component
   const PrivateRoute = ({ children }) => {
     if (!token) {
       return <Navigate to="/" />;
@@ -105,68 +90,95 @@ function AppContent() {
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
-        <Route path="/auth" element={
-          token ? <Navigate to="/home" /> : <AuthPage onLogin={handleLogin} />
-        } />
-        
+        <Route
+          path="/auth"
+          element={token ? <Navigate to="/home" /> : <AuthPage onLogin={handleLogin} />}
+        />
+
         {/* Protected routes */}
-        <Route path="/questionnaire" element={
-          !token ? <Navigate to="/" /> :
-          user.isQuestionnaireDone ? <Navigate to="/home" /> :
-          <QuestionnaireForm onComplete={handleQuestionnaireComplete} />
-        } />
+        <Route
+          path="/questionnaire"
+          element={
+            !token ? (
+              <Navigate to="/" />
+            ) : user.isQuestionnaireDone ? (
+              <Navigate to="/home" />
+            ) : (
+              <QuestionnaireForm onComplete={handleQuestionnaireComplete} />
+            )
+          }
+        />
 
-        <Route path="/home" element={
-          <PrivateRoute>
-            <Layout onLogout={handleLogout}>
-              <HomePage onLogout={handleLogout} />
-            </Layout>
-          </PrivateRoute>
-        } />
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Layout onLogout={handleLogout}>
+                <HomePage onLogout={handleLogout} />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
 
-        <Route path="/insights" element={
-          <PrivateRoute>
-            <Layout onLogout={handleLogout}>
-              <InsightsPage />
-            </Layout>
-          </PrivateRoute>
-        } />
+        <Route
+          path="/insights"
+          element={
+            <PrivateRoute>
+              <Layout onLogout={handleLogout}>
+                <InsightsPage />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
 
-        <Route path="/investment" element={
-          <PrivateRoute>
-            <Layout onLogout={handleLogout}>
-              <InvestmentPage />
-            </Layout>
-          </PrivateRoute>
-        } />
+        <Route
+          path="/investment"
+          element={
+            <PrivateRoute>
+              <Layout onLogout={handleLogout}>
+                <InvestmentPage />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
 
-        <Route path="/motivate" element={
-          <PrivateRoute>
-            <Layout onLogout={handleLogout}>
-              <MotivatePage />
-            </Layout>
-          </PrivateRoute>
-        } />
-        <Route path="/chat" element={
-          <PrivateRoute>
-            <Layout onLogout={handleLogout}>
-              <ChatPage />
-            </Layout>
-          </PrivateRoute>
-        } />
-        <Route path="/profile" element={
-          <PrivateRoute>
-            <Layout onLogout={handleLogout}>
-              <ProfilePage onLogout={handleLogout} />
-            </Layout>
-          </PrivateRoute>
-        } />
+        <Route
+          path="/motivate"
+          element={
+            <PrivateRoute>
+              <Layout onLogout={handleLogout}>
+                <MotivatePage />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/chat"
+          element={
+            <PrivateRoute>
+              <Layout onLogout={handleLogout}>
+                <ChatPage />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Layout onLogout={handleLogout}>
+                <ProfilePage onLogout={handleLogout} />
+              </Layout>
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </AppContainer>
   );
 }
 
-// Main App component
 function App() {
   return (
     <Router>
@@ -175,4 +187,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
