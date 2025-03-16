@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { motion } from 'framer-motion';
+import { color, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Modal from './Modal';
+import Aurora from './Aurora';
+import TextPressure from './TextPressure';
 
 const bounce = keyframes`
   0%, 100% {
@@ -21,6 +23,7 @@ const ContentContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  position: relative; /* Ensure relative positioning for child elements */
 `;
 
 const ImageContainer = styled.div`
@@ -108,14 +111,12 @@ const HomePage = ({ onLogout }) => {
   };
 
   const handleSavingSubmit = () => {
-    // Handle saving submission here
     console.log('Saved amount:', savingAmount);
     setIsSavingModalOpen(false);
     setSavingAmount('');
   };
 
   const handleSpendingSubmit = () => {
-    // Handle spending submission here
     console.log('Spending:', { category: spendingCategory, amount: spendingAmount });
     setIsSpendingModalOpen(false);
     setSpendingCategory('');
@@ -124,29 +125,47 @@ const HomePage = ({ onLogout }) => {
 
   return (
     <ContentContainer>
-      <ImageContainer>
-        <BouncingImage 
-          src="https://cdn-icons-png.flaticon.com/512/2534/2534183.png" 
-          alt="Money Growth"
-        />
-        <BouncingImage 
-          src="https://cdn-icons-png.flaticon.com/512/2535/2535557.png" 
-          alt="Investment"
-        />
-      </ImageContainer>
-      <ButtonContainer>
-        
+      <Aurora
+        colorStops={["#152642", "#29bd08", "#152642"]}
+      />
+
+      {/* Attractive Text at Top Left */}
+
+      {/* Centered Content */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%', // Ensure it takes full height
+        gap: '1rem', // Add spacing between elements
+      }}>      <h1 style={{color:"White"}}>WELCOME TO SPENDWISE!</h1>
+        {/* Centered <p> Tag */}
+        <p style={{ fontSize: '1.2rem', opacity: 0.8, textAlign: 'center' }}>
+          Your personal financial AI assistant. Let's make smarter money decisions together.
+        </p>
+
+
+        {/* Centered Button */}
         <Button
           main
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate('/chat')}
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.1)', // Near-transparent white
+            color: 'white', // Text color
+            padding: '1rem 2rem', // Padding
+            borderRadius: '10px', // Rounded corners
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Shadow for better visibility
+            border: '1px solid rgba(255, 255, 255, 0.2)', // Optional: Add a subtle border
+          }}
         >
-          Chat Financially
+          Chat with SpendWise
         </Button>
-        
-      </ButtonContainer>
+      </div>
 
+      {/* Modals */}
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}

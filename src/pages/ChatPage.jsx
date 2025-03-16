@@ -8,7 +8,7 @@ const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' }); // U
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([
-    { text: "Hello! I'm your financial assistant powered by Gemini AI. How can I help you today?", isUser: false }
+    { text: "Hello! I'm your financial assistant. How can I help you today?", isUser: false }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
