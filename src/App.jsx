@@ -1,16 +1,7 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import styled from 'styled-components';
-import ChatPage from './pages/ChatPage';
-import QuestionnaireForm from './components/QuestionnaireForm';
-import HomePage from './components/HomePage';
-import InsightsPage from './pages/InsightsPage';
-import MotivatePage from './pages/MotivatePage';
-import ProfilePage from './pages/ProfilePage';
-import AuthPage from './pages/AuthPage';
-import LandingPage from './pages/LandingPage';
-import InvestmentPage from './pages/InvestmentPage';
-import Layout from './components/Layout';
+import InitialRouter from './router/InitialRouter';
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -32,10 +23,9 @@ const AppContainer = styled.div`
   overflow: hidden;
 `;
 
-function AppContent() {
+function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
-  const navigate = useNavigate();
 
   const handleLogin = (userData, authToken) => {
     setToken(authToken);
@@ -49,7 +39,6 @@ function AppContent() {
     setUser({});
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/');
   };
 
   const handleQuestionnaireComplete = async (questionnaireData) => {
@@ -75,114 +64,17 @@ function AppContent() {
     }
   };
 
-  const PrivateRoute = ({ children }) => {
-    if (!token) {
-      return <Navigate to="/" />;
-    }
-    if (!user.isQuestionnaireDone && window.location.pathname !== '/questionnaire') {
-      return <Navigate to="/questionnaire" />;
-    }
-    return children;
-  };
-
-  return (
-    <AppContainer>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/auth"
-          element={token ? <Navigate to="/home" /> : <AuthPage onLogin={handleLogin} />}
-        />
-
-        {/* Protected routes */}
-        <Route
-          path="/questionnaire"
-          element={
-            !token ? (
-              <Navigate to="/" />
-            ) : user.isQuestionnaireDone ? (
-              <Navigate to="/home" />
-            ) : (
-              <QuestionnaireForm onComplete={handleQuestionnaireComplete} />
-            )
-          }
-        />
-
-        <Route
-          path="/home"
-          element={
-            <PrivateRoute>
-              <Layout onLogout={handleLogout}>
-                <HomePage onLogout={handleLogout} />
-              </Layout>
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/insights"
-          element={
-            <PrivateRoute>
-              <Layout onLogout={handleLogout}>
-                <InsightsPage />
-              </Layout>
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/investment"
-          element={
-            <PrivateRoute>
-              <Layout onLogout={handleLogout}>
-                <InvestmentPage />
-              </Layout>
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/motivate"
-          element={
-            <PrivateRoute>
-              <Layout onLogout={handleLogout}>
-                <MotivatePage />
-              </Layout>
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/chat"
-          element={
-            <PrivateRoute>
-              <Layout onLogout={handleLogout}>
-                <ChatPage />
-              </Layout>
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <Layout onLogout={handleLogout}>
-                <ProfilePage onLogout={handleLogout} />
-              </Layout>
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </AppContainer>
-  );
-}
-
-function App() {
   return (
     <Router>
-      <AppContent />
+      <AppContainer>
+        <InitialRouter
+          token={token}
+          user={user}
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+          handleQuestionnaireComplete={handleQuestionnaireComplete}
+        />
+      </AppContainer>
     </Router>
   );
 }
