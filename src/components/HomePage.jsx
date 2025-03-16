@@ -135,13 +135,7 @@ const HomePage = ({ onLogout }) => {
         />
       </ImageContainer>
       <ButtonContainer>
-        <Button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsSpendingModalOpen(true)}
-        >
-          Spending
-        </Button>
+        
         <Button
           main
           whileHover={{ scale: 1.05 }}
@@ -150,13 +144,7 @@ const HomePage = ({ onLogout }) => {
         >
           Chat Financially
         </Button>
-        <Button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsSavingModalOpen(true)}
-        >
-          Saving
-        </Button>
+        
       </ButtonContainer>
 
       <Modal
